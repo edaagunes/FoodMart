@@ -1,0 +1,11 @@
+﻿@using FoodMartProject.Entities
+@model Category
+@{
+    Layout = null;
+}
+
+<form method="post">
+    <label>Kategori Adı</label>
+    <input type="text" class="form-control" asp-for="CategoryName"/>
+	<button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
