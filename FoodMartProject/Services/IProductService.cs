@@ -1,6 +1,10 @@
-﻿namespace FoodMartProject.Services
+﻿using FoodMartProject.Dtos.ProductDtos;
+using FoodMartProject.Entities;
+
+namespace FoodMartProject.Services
 {
-	public interface IProductService
+	public interface IProductService : IGenericService<Product, CreateProductDto, UpdateProductDto, GetByIdProductDto, ResultProductDto>
 	{
+		Task<List<ResultProductDto>> GetAllProductWithCategoryAsync();
 	}
 }
