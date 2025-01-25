@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FoodMartProject.Settings;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace FoodMartProject.Services
@@ -30,9 +31,7 @@ namespace FoodMartProject.Services
 
 		public async Task UpdateAsync(TUpdateDto updateDto)
 		{
-			var entity = _mapper.Map<TEntity>(updateDto);
-
-			// TUpdateDto'daki ID alanını bulma (ör. ProductId gibi özelleştirilmiş adlandırmalar)
+			// TUpdateDto'daki ID alanını bulma
 			var idProperty = typeof(TUpdateDto).GetProperties()
 											   .FirstOrDefault(p => p.Name.EndsWith("Id", StringComparison.OrdinalIgnoreCase));
 
@@ -41,31 +40,46 @@ namespace FoodMartProject.Services
 				var idValue = idProperty.GetValue(updateDto)?.ToString();
 				if (!string.IsNullOrEmpty(idValue))
 				{
-					// MongoDB'de _id alanını kullanarak güncelleme
-					var filter = Builders<TEntity>.Filter.Eq("_id", idValue);
+					// ObjectId'ye dönüştürme
+					var objectId = ObjectId.Parse(idValue);
+
+					// MongoDB'de _id alanı üzerinden güncelleme
+					var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+					var entity = _mapper.Map<TEntity>(updateDto);
 					await _collection.ReplaceOneAsync(filter, entity);
-				}
-				else
-				{
-					throw new ArgumentException("ID değeri boş olamaz.");
 				}
 			}
 			else
 			{
-				throw new ArgumentException("ID alanı bulunamadı.");
+				throw new ArgumentException("Id alanı bulunamadı.", nameof(updateDto));
+			}
+		}
+		public async Task DeleteAsync(string id)
+		{
+			if (ObjectId.TryParse(id, out var objectId))
+			{
+				var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+				await _collection.DeleteOneAsync(filter);
+			}
+			else
+			{
+				throw new ArgumentException("Geçersiz ObjectId formatı.", nameof(id));
+			}
+		}
+		public async Task<TGetByIdDto> GetByIdAsync(string id)
+		{
+			if (ObjectId.TryParse(id, out var objectId))
+			{
+				// ObjectId ile filtreleme
+				var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+				var entity = await _collection.Find(filter).FirstOrDefaultAsync();
+				return _mapper.Map<TGetByIdDto>(entity);
+			}
+			else
+			{
+				throw new ArgumentException("Geçersiz ObjectId formatı.", nameof(id));
 			}
 		}
 
-
-		public async Task DeleteAsync(string id)
-		{
-			await _collection.DeleteOneAsync(x => x.Equals(id));
-		}
-
-		public async Task<TGetByIdDto> GetByIdAsync(string id)
-		{
-			var entity = await _collection.Find(x => x.Equals(id)).FirstOrDefaultAsync();
-			return _mapper.Map<TGetByIdDto>(entity);
-		}
 	}
 }

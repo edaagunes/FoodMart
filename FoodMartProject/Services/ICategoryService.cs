@@ -4,9 +4,8 @@ using FoodMartProject.Entities;
 
 namespace FoodMartProject.Services
 {
-	public interface ICategoryService
+	public interface ICategoryService:IGenericService<Category, CreateCategoryDto, UpdateCategoryDto, GetByIdCategoryDto, ResultCategoryDto>
 	{
-		Task<List<ResultCategoryDto>> GetAllCategory();
-		Task AddCategoryAsync(Category category);
+
 	}
 }

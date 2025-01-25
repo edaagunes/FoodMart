@@ -7,24 +7,13 @@ using MongoDB.Driver;
 
 namespace FoodMartProject.Services
 {
-	public class CategoryService : BaseMongoService<Category>,ICategoryService
+	public class CategoryService : GenericService<Category, CreateCategoryDto, UpdateCategoryDto, GetByIdCategoryDto, ResultCategoryDto>, ICategoryService
 	{
-		private readonly IMapper _mapper;
-
-		public CategoryService(IMapper mapper, IDatabaseSettings databaseSettings)
-			: base(databaseSettings, databaseSettings.CategoryCollectionName)
+		public CategoryService(IMapper mapper, IDatabaseSettings databaseSettings) : base(mapper, databaseSettings, databaseSettings.CategoryCollectionName)
 		{
-			_mapper = mapper;
+			var client = new MongoClient(databaseSettings.ConnectionString);
+			var database = client.GetDatabase(databaseSettings.DatabaseName);
 		}
 
-		public async Task<List<ResultCategoryDto>> GetAllCategory()
-		{
-			var values = await _collection.Find(x => true).ToListAsync();
-			return _mapper.Map<List<ResultCategoryDto>>(values);
-		}
-		public async Task AddCategoryAsync(Category category)
-		{
-			await _collection.InsertOneAsync(category);
-		}
 	}
 }
