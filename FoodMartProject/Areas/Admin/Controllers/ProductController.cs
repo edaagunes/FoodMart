@@ -21,12 +21,12 @@ namespace FoodMartProject.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Create()
+		public IActionResult CreateProduct()
 		{
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> Create(CreateProductDto createProductDto)
+		public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
 		{
 			await _productService.CreateAsync(createProductDto);
 			return RedirectToAction("Index");

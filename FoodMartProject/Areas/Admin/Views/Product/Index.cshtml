@@ -1,14 +1,12 @@
 ﻿@using FoodMartProject.Dtos.ProductDtos
 @model List<ResultProductDto>
-
+@{
+    Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
+}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ürün Listesi</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-</head>
+
+
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">Ürün Listesi</h2>
@@ -36,7 +34,7 @@
                             <td>@product.ProductPrice.ToString("C")</td>
                             <td>@product.CategoryName</td>
                             <td>
-                                <img src="@product.ProductImage" alt="Ürün Görseli" width="100" height="100" />
+                                <img src="@product.ProductImage" alt="Ürün Görseli" width="50" height="50" />
                             </td>
                             <td>
                                 <a href="@Url.Action("Edit", "Product", new { id = product.ProductId })" class="btn btn-warning btn-sm">Düzenle</a>
@@ -54,7 +52,7 @@
                 }
             </tbody>
         </table>
-        <a href="@Url.Action("Create", "Product",new { area = "Admin" })" class="btn btn-warning btn-sm">Ekle</a>
+        <a href="@Url.Action("CreateProduct", "Product",new { area = "Admin" })" class="btn btn-warning btn-sm">Ekle</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
