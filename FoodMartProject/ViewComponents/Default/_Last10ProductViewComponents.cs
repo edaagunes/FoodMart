@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FoodMartProject.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FoodMartProject.ViewComponents.Default
 {
 	public class _Last10ProductViewComponents : ViewComponent
 	{
-		public IViewComponentResult Invoke()
+		private readonly IProductService _productService;
+
+		public _Last10ProductViewComponents(IProductService productService)
 		{
-			return View();
+			_productService = productService;
+		}
+
+		public async Task<IViewComponentResult> InvokeAsync()
+		{
+			var products = await _productService.GetAllAsync();
+			return View(products);
 		}
 	}
 }
