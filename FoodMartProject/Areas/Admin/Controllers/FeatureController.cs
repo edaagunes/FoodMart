@@ -17,9 +17,9 @@ namespace FoodMartProject.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index(int page = 1, int pageSize = 5)
 		{
-			var categories = await _featureService.GetAllAsync();
-			var pagedCategories = categories.ToPagedList(page, pageSize);
-			return View(pagedCategories);
+			var values = await _featureService.GetAllAsync();
+			var pagedFeatures = values.ToPagedList(page, pageSize);
+			return View(pagedFeatures);
 		}
 
 		[HttpGet]

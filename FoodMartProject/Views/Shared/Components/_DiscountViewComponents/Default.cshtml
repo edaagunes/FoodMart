@@ -1,23 +1,25 @@
-﻿<div class="banner-ad bg-success-subtle block-2" style="background:url('/foodmart/images/ad-image-1.png') no-repeat;background-position: right bottom">
-    <div class="row banner-content p-5">
+﻿@model List<ResultDiscountDto>
 
-        <div class="content-wrapper col-md-7">
-            <div class="categories sale mb-3 pb-3">20% off</div>
-            <h3 class="banner-title">Fruits & Vegetables</h3>
-            <a href="#" class="d-flex align-items-center nav-link">Shop Collection <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
+@{
+    int index = 0; // Sayaç tanımla
+}
+
+@foreach (var item in Model)
+{
+    // Arka plan pozisyonunu sıraya göre belirle
+    var bgPosition = index % 2 == 0 ? "right top" : "right bottom";
+
+    // Sınıf adını sıraya göre belirle
+    var blockClass = index % 2 == 0 ? "block-2" : "block-3";
+
+    <div class="banner-ad bg-success-subtle @blockClass" style="background:url('@item.Image') no-repeat;background-position: @bgPosition; margin-bottom: 20px;">
+        <div class="row banner-content p-5">
+            <div class="content-wrapper col-md-7">
+                <div class="categories sale mb-3 pb-3">@item.DiscountPercent% @item.DiscountTitle</div>
+                <h3 class="banner-title">@item.Description</h3>
+            </div>
         </div>
-
     </div>
-</div>
 
-<div class="banner-ad bg-danger block-3" style="background:url('/foodmart/images/ad-image-2.png') no-repeat;background-position: right bottom">
-    <div class="row banner-content p-5">
-
-        <div class="content-wrapper col-md-7">
-            <div class="categories sale mb-3 pb-3">15% off</div>
-            <h3 class="item-title">Baked Products</h3>
-            <a href="#" class="d-flex align-items-center nav-link">Shop Collection <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
-        </div>
-
-    </div>
-</div>
+    index++; // Sayaç artır
+}
