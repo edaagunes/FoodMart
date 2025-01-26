@@ -4,7 +4,7 @@
     int index = 0; // Sayaç tanımla
 }
 
-@foreach (var item in Model)
+@foreach (var item in Model.Take(2))
 {
     // Arka plan pozisyonunu sıraya göre belirle
     var bgPosition = index % 2 == 0 ? "right top" : "right bottom";
