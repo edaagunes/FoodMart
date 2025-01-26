@@ -1,0 +1,70 @@
+﻿@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("_HeadLayout")
+
+<body>
+	@await Component.InvokeAsync("_SvgLayout")
+	@await Component.InvokeAsync("_BasketCanvasLayout")
+	@await Component.InvokeAsync("_SearchCanvasLayout")
+	@await Component.InvokeAsync("_NavbarLayout")
+
+	<section class="py-3" style="background-image: url('/foodmart/images/background-pattern.jpg');background-repeat: no-repeat;background-size: cover;">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="banner-blocks">
+
+						@await Component.InvokeAsync("_FeatureViewComponents")
+						@await Component.InvokeAsync("_DiscountViewComponents")
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	@await Component.InvokeAsync("_CategoryViewComponents")
+
+	@await Component.InvokeAsync("_Last10ProductViewComponents")
+
+	@await Component.InvokeAsync("_SubDiscountViewComponents")
+
+	@await Component.InvokeAsync("_MostSelling6ProductViewComponents")
+
+	@await Component.InvokeAsync("_MailViewComponents")
+
+	@await Component.InvokeAsync("_TagCloudViewComponents")
+
+	@await Component.InvokeAsync("_ServiceViewComponents")
+
+	<footer class="py-5">
+		<div class="container-fluid">
+			<div class="row">
+
+				@await Component.InvokeAsync("_SocialMediaViewComponents")
+
+				@await Component.InvokeAsync("_FooterViewComponents")
+
+			</div>
+		</div>
+	</footer>
+	<div id="footer-bottom">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-6 copyright">
+					<p>© 2023 Foodmart. All rights reserved.</p>
+				</div>
+				<div class="col-md-6 credit-link text-start text-md-end">
+					<p>Free HTML Template by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distributed by <a href="https://themewagon">ThemeWagon</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	@await Component.InvokeAsync("_ScriptsViewComponents")
+</body>
+</html>
