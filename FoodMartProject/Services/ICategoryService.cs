@@ -4,7 +4,7 @@ using FoodMartProject.Entities;
 
 namespace FoodMartProject.Services
 {
-	public interface ICategoryService:IGenericService<Category, CreateCategoryDto, UpdateCategoryDto, GetByIdCategoryDto, ResultCategoryDto>
+	public interface ICategoryService : IGenericService<Category, CreateCategoryDto, UpdateCategoryDto, GetByIdCategoryDto, ResultCategoryDto>
 	{
 
 	}
