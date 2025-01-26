@@ -1,0 +1,92 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<ResultFeatureDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
+}
+
+<body>
+	<div class="container mt-5">
+		<h2 class="mb-4">Öne Çıkanlar Listesi</h2>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>Öne Çıkan ID</th>
+					<th></th>
+					<th>Başlık</th>
+					<th>Açıklama</th>
+					<th>Alt Açıklama</th>
+					<th>İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model != null && Model.Any())
+				{
+					foreach (var feature in Model)
+					{
+						<tr>
+							<td>@feature.FeatureId</td>
+							<td>
+								<img src="@feature.Image" style="width:50px;height:50px;" />
+							</td>
+							<td>@feature.Header</td>
+							<td>@feature.Title</td>
+							<td>@feature.SubTitle</td>
+							<td>
+								<a href="@Url.Action("UpdateFeature", "Feature", new { id = feature.FeatureId })" class="btn btn-warning btn-sm">Düzenle</a>
+								<a href="@Url.Action("DeleteFeature", "Feature", new { id = feature.FeatureId })" class="btn btn-danger btn-sm"
+								   onclick="return confirm('Bu öne çıkanı silmek istediğinize emin misiniz?');">Sil</a>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr>
+						<td colspan="7" class="text-center">Listelenecek öne çıkan bulunamadı.</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<a href="@Url.Action("CreateFeature", "Feature",new { area = "Admin" })" class="btn btn-primary btn-sm">Ekle</a>
+	</div>
+	<div class="pagination-wrapper">
+		@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+{
+	DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+	DisplayLinkToLastPage = PagedListDisplayMode.Always,
+	DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+	DisplayLinkToNextPage = PagedListDisplayMode.Always,
+	MaximumPageNumbersToDisplay = 5
+})
+	</div>
+</body>
+
+
+<style>
+	.pagination-wrapper ul {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+		.pagination-wrapper ul li {
+			margin: 0 5px;
+		}
+
+			.pagination-wrapper ul li a {
+				padding: 5px 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				text-decoration: none;
+				color: #333;
+			}
+
+				.pagination-wrapper ul li a:hover {
+					background-color: #04aa6d;
+					color: #fff;
+				}
+</style>
+

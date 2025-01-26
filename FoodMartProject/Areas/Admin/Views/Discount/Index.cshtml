@@ -1,0 +1,93 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<ResultDiscountDto>
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
+}
+
+<body>
+	<div class="container mt-5">
+		<h2 class="mb-4">İndirimler Listesi</h2>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>İndirim ID</th>
+					<th></th>
+					<th>İndirim Oranı</th>
+					<th>Başlık</th>
+					<th>Açıklama</th>
+					<th>İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model != null && Model.Any())
+				{
+					foreach (var discount in Model)
+					{
+						<tr>
+							<td>@discount.DiscountId</td>
+							<td>
+								<img src="@discount.Image" style="width:50px;height:50px;" />
+							</td>
+							<td>@discount.DiscountPercent</td>
+							<td>@discount.DiscountTitle</td>
+							<td>@discount.Description</td>
+							<td>
+								<a href="@Url.Action("UpdateDiscount", "Discount", new { id = discount.DiscountId })" class="btn btn-warning btn-sm">Düzenle</a>
+								<a href="@Url.Action("DeleteDiscount", "Discount", new { id = discount.DiscountId })" class="btn btn-danger btn-sm"
+								   onclick="return confirm('Bu indirimi silmek istediğinize emin misiniz?');">Sil</a>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr>
+						<td colspan="7" class="text-center">Listelenecek indirim bulunamadı.</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<a href="@Url.Action("CreateDiscount", "Discount",new { area = "Admin" })" class="btn btn-primary btn-sm">Ekle</a>
+	</div>
+	<div class="pagination-wrapper">
+		@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+{
+	DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+	DisplayLinkToLastPage = PagedListDisplayMode.Always,
+	DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+	DisplayLinkToNextPage = PagedListDisplayMode.Always,
+	MaximumPageNumbersToDisplay = 5
+})
+	</div>
+</body>
+
+
+<style>
+	.pagination-wrapper ul {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+		.pagination-wrapper ul li {
+			margin: 0 5px;
+		}
+
+			.pagination-wrapper ul li a {
+				padding: 5px 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				text-decoration: none;
+				color: #333;
+			}
+
+				.pagination-wrapper ul li a:hover {
+					background-color: #04aa6d;
+					color: #fff;
+				}
+</style>
+
+

@@ -1,0 +1,91 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<ResultSellingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
+}
+
+<body>
+	<div class="container mt-5">
+		<h2 class="mb-4">Satış Listesi</h2>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>Satış ID</th>
+					<th>Ürün</th>
+					<th>Ürün Sayısı</th>
+					<th>Toplam Fiyat</th>
+					<th>Satış Tarihi</th>
+					<th>İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model != null && Model.Any())
+				{
+					foreach (var selling in Model)
+					{
+						<tr>
+							<td>@selling.SellingId</td>
+							<td>@selling.ProductId</td>
+							<td>@selling.Count</td>
+							<td>@selling.TotalPrice</td>
+							<td>@selling.SellingDate.ToString("dd-MM-yyyy")</td>
+							<td>
+								<a href="@Url.Action("UpdateSelling", "Selling", new { id = selling.SellingId })" class="btn btn-warning btn-sm">Düzenle</a>
+								<a href="@Url.Action("DeleteSelling", "Selling", new { id = selling.SellingId })" class="btn btn-danger btn-sm"
+								   onclick="return confirm('Bu satışı silmek istediğinize emin misiniz?');">Sil</a>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr>
+						<td colspan="7" class="text-center">Listelenecek satış bulunamadı.</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<a href="@Url.Action("CreateSelling", "Selling",new { area = "Admin" })" class="btn btn-primary btn-sm">Ekle</a>
+	</div>
+	<div class="pagination-wrapper">
+		@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+{
+	DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+	DisplayLinkToLastPage = PagedListDisplayMode.Always,
+	DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+	DisplayLinkToNextPage = PagedListDisplayMode.Always,
+	MaximumPageNumbersToDisplay = 5
+})
+	</div>
+</body>
+
+
+<style>
+	.pagination-wrapper ul {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+		.pagination-wrapper ul li {
+			margin: 0 5px;
+		}
+
+			.pagination-wrapper ul li a {
+				padding: 5px 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				text-decoration: none;
+				color: #333;
+			}
+
+				.pagination-wrapper ul li a:hover {
+					background-color: #04aa6d;
+					color: #fff;
+				}
+</style>
+
+

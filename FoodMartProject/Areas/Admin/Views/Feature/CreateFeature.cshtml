@@ -1,0 +1,31 @@
+﻿@model CreateFeatureDto
+@{
+    ViewData["Title"] = "CreateFeature";
+    Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
+}
+
+<div class="container  mt-5">
+	<h2 class="mb-4">Öne Çıkan Ekle</h2>
+	<form asp-action="CreateFeature" method="post">
+		<div class="form-group mb-2">
+			<label class="control-label">Öne Çıkan Adı</label>
+			<input asp-for="Header" class="form-control" />
+		</div>
+		<div class="form-group mb-2">
+			<label class="control-label">Açıklama</label>
+			<input asp-for="Title" class="form-control" />
+		</div>
+		<div class="form-group mb-2">
+			<label class="control-label">Alt Açıklama</label>
+			<input asp-for="SubTitle" class="form-control" />
+		</div>
+		<div class="form-group mb-2">
+			<label class="control-label">Görsel Yolu</label>
+			<input asp-for="Image" class="form-control" />
+		</div>
+		<button type="submit" class="btn btn-primary">Ekle</button>
+	</form>
+</div>
+
+
+

@@ -1,77 +1,85 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+	Layout = null;
 }
 
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-    }
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
 
-    .custom-navbar {
-        width: 100%;
-        background-color: #555;
-        overflow: auto;
-    }
+	.custom-navbar {
+		width: 100%;
+		background-color: #555;
+		overflow: auto;
+	}
 
-        .custom-navbar a {
-            float: left;
-            padding: 12px;
-            color: white;
-            text-decoration: none;
-            font-size: 17px;
-        }
+		.custom-navbar a {
+			float: left;
+			padding: 12px;
+			color: white;
+			text-decoration: none;
+			font-size: 17px;
+		}
 
-            .custom-navbar a:hover {
-                background-color: #000;
-            }
+			.custom-navbar a:hover {
+				background-color: #000;
+			}
 
-    .nav-item.active {
-        background-color: #04AA6D;
-        color: white;
-        font-weight: bold;
-    }
+	.nav-item.active {
+		background-color: #04AA6D;
+		color: white;
+		font-weight: bold;
+	}
 
-    @@media screen and (max-width: 500px) {
-        .custom-navbar a
-
-    {
-        float: none;
-        display: block;
-    }
-
-    }
-    
+/* 	@@media screen and (max-width: 500px) {
+		.custom-navbar a {
+			float: none;
+			display: block;
+		}
+	} */
 </style>
 <body>
 
-    <div class="custom-navbar">
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")"
-           asp-area="Admin" asp-controller="Product" asp-action="Index">
-            <i class="fa fa-cubes"></i> Ürünler
-        </a>
-        <a class="nav-item" href="#"><i class="fa fa-th-list"></i> Kategoriler</a>
-        <a class="nav-item" href="#"><i class="fa fa-percent"></i> İndirimler</a>
-        <a class="nav-item" href="#"><i class="fa fa-shopping-cart"></i> Satış Geçmişi</a>
-        <a class="nav-item" href="#"><i class="fa fa-thumb-tack"></i> Öne Çıkanlar</a>
-    </div>
+	<div class="custom-navbar">
+		<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")"
+		   asp-area="Admin" asp-controller="Product" asp-action="Index">
+			<i class="fa fa-cubes"></i> Ürünler
+		</a>
+		<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")"
+		   asp-area="Admin" asp-controller="Category" asp-action="Index">
+			<i class="fa fa-th-list"></i> Kategoriler
+		</a>
+
+		<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Discount" ? "active" : "")"
+		   asp-area="Admin" asp-controller="Discount" asp-action="Index">
+			<i class="fa fa-percent"></i> İndirimler
+		</a>
+		<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Feature" ? "active" : "")"
+		   asp-area="Admin" asp-controller="Feature" asp-action="Index">
+			<i class="fa fa-thumb-tack"></i> Öne Çıkanlar
+		</a>
+		<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Selling" ? "active" : "")"
+		   asp-area="Admin" asp-controller="Selling" asp-action="Index">
+			<i class="fa fa-shopping-cart"></i> Satış Geçmişi
+		</a>
+	</div>
 
 
-    @RenderBody();
+	@RenderBody()
 </body>
 
 <script>
-    const navItems = document.querySelectorAll('.custom-navbar .nav-item');
+	const navItems = document.querySelectorAll('.custom-navbar .nav-item');
 
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            navItems.forEach(el => el.classList.remove('active'));
-            item.classList.add('active');
-        });
-    });
+	navItems.forEach(item => {
+		item.addEventListener('click', () => {
+			navItems.forEach(el => el.classList.remove('active'));
+			item.classList.add('active');
+		});
+	});
 </script>
