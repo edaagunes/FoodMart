@@ -19,7 +19,7 @@ namespace FoodMartProject.Areas.Admin.Controllers
 			_productService = productService;
 		}
 
-		public async Task<IActionResult> Index(int page = 1, int pageSize = 5)
+		public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
 		{
 			var categories = await _sellingService.GetAllSellingWithProductNameAsync();
 			var pagedCategories = categories.ToPagedList(page, pageSize);
@@ -40,6 +40,11 @@ namespace FoodMartProject.Areas.Admin.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateSelling(CreateSellingDto createSellingDto)
 		{
+			// Eğer tarih seçilmemişse, bugünün tarihi kullanılır.
+			if (createSellingDto.SellingDate == DateTime.MinValue)
+			{
+				createSellingDto.SellingDate = DateTime.Now;
+			}
 			await _sellingService.CreateAsync(createSellingDto);
 			return RedirectToAction("Index");
 		}

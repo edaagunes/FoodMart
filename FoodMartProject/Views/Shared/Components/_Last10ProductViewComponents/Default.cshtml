@@ -1,30 +1,19 @@
 ﻿@model List<ResultProductDto>
 <section class="py-5">
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12">
-
                 <div class="bootstrap-tabs product-tabs">
                     <div class="tabs-header d-flex justify-content-between border-bottom my-5">
                         <h3>Taze Ürünler</h3>
-                       @*  <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a href="#" class="nav-link text-uppercase fs-6 active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all">All</a>
-                                <a href="#" class="nav-link text-uppercase fs-6" id="nav-fruits-tab" data-bs-toggle="tab" data-bs-target="#nav-fruits">Fruits & Veges</a>
-                                <a href="#" class="nav-link text-uppercase fs-6" id="nav-juices-tab" data-bs-toggle="tab" data-bs-target="#nav-juices">Juices</a>
-                            </div>
-                        </nav> *@
                     </div>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-
                             <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                                 @foreach (var item in Model.TakeLast(10))
                                 {
                                     <div class="col">
                                         <div class="product-item">
-                                           
                                             <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                                             <figure>
                                                 <a href="index.html" title="Product Title">
@@ -32,36 +21,82 @@
                                                 </a>
                                             </figure>
                                             <h3>@item.ProductName</h3>
-                                            <span class="qty">1 Adet</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                                            <span class="qty">1 Adet</span>
+                                            <span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
                                             <span class="price">@item.ProductPrice.ToString("0.00")₺</span>
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="input-group product-qty">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-product-id="@item.ProductId">
                                                             <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                                         </button>
                                                     </span>
-                                                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                                                    <input type="text" id="quantity-@item.ProductId" name="quantity" class="form-control input-number" value="1">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-product-id="@item.ProductId">
                                                             <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
                                                         </button>
                                                     </span>
                                                 </div>
-                                                <a href="#" class="nav-link">Sepete Ekle <iconify-icon icon="uil:shopping-cart"></a>
+                                                <!-- Sepete Ekle Butonu -->
+                                                <a href="#" class="nav-link add-to-cart"
+                                                   data-product-id="@item.ProductId"
+                                                   data-product-name="@item.ProductName"
+                                                   data-product-price="@item.ProductPrice"
+                                                   data-product-date="@DateTime.Now.ToString("dd-MM-yyyy")">
+                                                    Sepete Ekle
+                                                    <iconify-icon icon="uil:shopping-cart"></iconify-icon>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-
                                 }
-                               
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    // Sepete ekleme işlemi
+          $(document).on('click', '.add-to-cart', function(e) {
+        e.preventDefault();
+
+        var productId = $(this).data('product-id');
+        var productName = $(this).data('product-name');
+        var productPrice = $(this).data('product-price');
+        var productDate = new Date().toISOString(); // Bugünün tarihini ISO formatında alıyoruz
+        var count = parseInt($('#quantity-' + productId).val()); // Her ürünün kendi sayısı
+        if (isNaN(count) || count <= 0) {
+            count = 1; // Varsayılan değer olarak 1 verelim
+        }
+
+        var totalPrice = productPrice * count; // Toplam fiyatı hesapla
+
+        // Sepete eklemek için AJAX ile backend'e veri gönder
+        $.ajax({
+            url: '@Url.Action("CreateSelling", "Selling", new { area = "Admin" })',
+            type: 'POST',
+            data: {
+                productId: productId,
+                productName: productName,
+                productPrice: productPrice,
+                productDate: productDate, // ISO formatındaki tarih
+                count: count,  // Ürün sayısını gönder
+                totalPrice: totalPrice.toFixed(2).replace('.', ',') // Formatlanmış fiyatı gönder
+            },
+            success: function(response) {
+                alert('Ürün sepete eklendi!');
+            },
+            error: function(error) {
+                alert('Bir hata oluştu.');
+            }
+        });
+    });
+
+</script>
