@@ -1,22 +1,26 @@
 ﻿using AutoMapper;
 using FoodMartProject.Dtos.ProductDtos;
+using FoodMartProject.Dtos.SellingDtos;
 using FoodMartProject.Entities;
 using FoodMartProject.Settings;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Linq;
 
 namespace FoodMartProject.Services
 {
 	public class ProductService : GenericService<Product, CreateProductDto, UpdateProductDto, GetByIdProductDto, ResultProductDto>, IProductService
 	{
 		private readonly IMongoCollection<Category> _categoryCollection;
+		private readonly ISellingService _sellingService;
 
-		public ProductService(IMapper mapper, IDatabaseSettings databaseSettings)
+		public ProductService(IMapper mapper, IDatabaseSettings databaseSettings, ISellingService sellingService)
 			: base(mapper, databaseSettings, databaseSettings.ProductCollectionName)
 		{
 			var client = new MongoClient(databaseSettings.ConnectionString);
 			var database = client.GetDatabase(databaseSettings.DatabaseName);
 			_categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
+			_sellingService = sellingService;
 		}
 
 		public async Task<List<ResultProductDto>> GetAllProductWithCategoryAsync()
@@ -40,6 +44,21 @@ namespace FoodMartProject.Services
 				).ToListAsync();
 
 			return query;
+		}
+
+		public async Task<List<ResultSellingDto>> GetMostSellingProductsAsync()
+		{
+			var sellingProducts = await _sellingService.GetMostSellingProductsAsync();
+
+			var result = sellingProducts.Select(selling => new ResultSellingDto
+			{
+				ProductId = selling.ProductId,
+				ProductName = selling.ProductName,
+				ProductImage = selling.ProductImage,
+				ProductPrice = selling.ProductPrice
+			}).ToList();
+
+			return result;
 		}
 	}
 }

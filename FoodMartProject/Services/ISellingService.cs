@@ -8,5 +8,6 @@ namespace FoodMartProject.Services
 	public interface ISellingService : IGenericService<Selling, CreateSellingDto, UpdateSellingDto, GetByIdSellingDto, ResultSellingDto>
 	{
 		Task<List<ResultSellingDto>> GetAllSellingWithProductNameAsync();
+		Task<List<ResultSellingDto>> GetMostSellingProductsAsync();
 	}
 }
