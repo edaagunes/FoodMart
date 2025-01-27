@@ -65,6 +65,7 @@
 </section>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     // Sepete ekleme işlemi
@@ -95,10 +96,26 @@
                 totalPrice: totalPrice.toFixed(2).replace('.', ',') // Formatlanmış fiyatı gönder
             },
             success: function(response) {
-                alert('Ürün sepete eklendi!');
+                // SweetAlert ile başarılı bildirim
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarıyla Sepete Eklendi!',
+                    text: productName + ' ürünü sepete eklendi.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Tamam',
+                    timer: 3000 // 3 saniye sonra otomatik kapanır
+                });
             },
             error: function(error) {
-                alert('Bir hata oluştu.');
+                // SweetAlert ile hata bildirimi
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Bir hata oluştu, lütfen tekrar deneyin.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Tamam',
+                    timer: 3000 // 3 saniye sonra otomatik kapanır
+                });
             }
         });
     });
