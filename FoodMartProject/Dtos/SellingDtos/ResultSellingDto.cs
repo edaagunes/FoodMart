@@ -7,6 +7,7 @@
 		public int Count { get; set; }
 		public decimal TotalPrice { get; set; }
 		public DateTime SellingDate { get; set; }
+		public string ProductName { get; set; }
 
 	}
 }

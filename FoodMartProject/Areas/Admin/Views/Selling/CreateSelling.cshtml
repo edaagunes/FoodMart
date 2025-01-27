@@ -4,27 +4,59 @@
     Layout = "~/Areas/Admin/Views/_AdminLayout.cshtml";
 }
 
-<div class="container  mt-5">
-	<h2 class="mb-4">Satış Ekle</h2>
-	<form asp-action="CreateSelling" method="post">
-		<div class="form-group mb-2">
-			<label class="control-label">Ürün Id</label>
-			<input asp-for="ProductId" class="form-control" />
-		</div>
-		<div class="form-group mb-2">
-			<label class="control-label">Adet</label>
-			<input asp-for="Count" class="form-control"/>
-		</div>
-		<div class="form-group mb-2">
-			<label class="control-label">Toplam Fiyat</label>
-			<input asp-for="TotalPrice" class="form-control" />
-		</div>
-		<div class="form-group mb-2">
-			<label class="control-label">Tarih</label>
-			<input asp-for="SellingDate" type="date" class="form-control" />
-		</div>
-		<button type="submit" class="btn btn-primary">Ekle</button>
-	</form>
+<div class="container mt-5">
+    <h2 class="mb-4">Satış Ekle</h2>
+    <form asp-action="CreateSelling" method="post">
+        <div class="form-group mb-2">
+            <label class="control-label">Ürün Adı</label>
+            <select id="productSelect" asp-for="ProductId" class="form-control" asp-items="@(new SelectList(ViewBag.Products, "Value", "Text"))">
+                <option value="" data-price="0">Ürün Seçin</option>
+                @foreach (var product in (List<SelectListItem>)ViewBag.Products)
+                {
+                    <option value="@product.Value" data-price="@product.Text.Split('|')[1].Replace(',', '.')">
+                        @product.Text.Split('|')[0]
+                    </option>
+
+                }
+            </select>
+        </div>
+        <div class="form-group mb-2">
+            <label class="control-label">Adet</label>
+            <input id="countInput" asp-for="Count" class="form-control" type="number" min="1" />
+        </div>
+        <div class="form-group mb-2">
+            <label class="control-label">Toplam Fiyat</label>
+            <input id="totalPriceInput" asp-for="TotalPrice" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-2">
+            <label class="control-label">Tarih</label>
+            <input asp-for="SellingDate" type="date" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Ekle</button>
+    </form>
 </div>
+
+<script>
+       document.addEventListener("DOMContentLoaded", function () {
+        const productSelect = document.getElementById("productSelect");
+        const countInput = document.getElementById("countInput");
+        const totalPriceInput = document.getElementById("totalPriceInput");
+
+        function calculateTotalPrice() {
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            let price = selectedOption.getAttribute("data-price");
+            price = parseFloat(price.replace(",", ".")); // Türkçe formatı düzeltme
+            const count = parseInt(countInput.value) || 0;
+            const total = price * count;
+
+            totalPriceInput.value = total.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        productSelect.addEventListener("change", calculateTotalPrice);
+        countInput.addEventListener("input", calculateTotalPrice);
+    });
+
+</script>
+
 
 
