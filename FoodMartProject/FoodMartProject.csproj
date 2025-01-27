@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MailKit" Version="4.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.18" />
+    <PackageReference Include="MimeKit" Version="4.10.0" />
     <PackageReference Include="MongoDB.Bson" Version="3.1.0" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     <PackageReference Include="X.PagedList" Version="10.5.7" />
