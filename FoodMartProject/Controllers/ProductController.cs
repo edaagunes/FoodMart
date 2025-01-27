@@ -17,5 +17,18 @@ namespace FoodMartProject.Controllers
 			var values=await _productService.GetAllAsync();
 			return View(values);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Search(string query)
+		{
+			if (string.IsNullOrWhiteSpace(query))
+			{
+				return RedirectToAction("Index");
+			}
+
+			var searchResults = await _productService.SearchProductsAsync(query);
+			return View("Index", searchResults); 
+		}
+
 	}
 }

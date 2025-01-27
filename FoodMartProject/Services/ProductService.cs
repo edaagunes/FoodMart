@@ -82,5 +82,27 @@ namespace FoodMartProject.Services
 			}).ToList();
 			return result;
 		}
+
+		public async Task<List<ResultProductDto>> SearchProductsAsync(string query)
+		{
+			if (string.IsNullOrWhiteSpace(query))
+				return new List<ResultProductDto>();
+
+			var products = await _collection.AsQueryable()
+				.Where(product => product.ProductName.ToLower().Contains(query.ToLower()))
+				.ToListAsync();
+
+			var result = products.Select(product => new ResultProductDto
+			{
+				ProductId = product.ProductId,
+				ProductName = product.ProductName,
+				ProductPrice = product.ProductPrice,
+				ProductImage = product.ProductImage,
+				ProductStock = product.ProductStock,
+				CategoryId = product.CategoryId,
+			}).ToList();
+
+			return result;
+		}
 	}
 }

@@ -9,5 +9,6 @@ namespace FoodMartProject.Services
 		Task<List<ResultProductDto>> GetAllProductWithCategoryAsync();
 		Task<List<ResultSellingDto>> GetMostSellingProductsAsync();
 		Task<List<ResultProductDto>> GetProductsByCategoryIdAsync(string categoryId);
+		Task<List<ResultProductDto>> SearchProductsAsync(string query);
 	}
 }
