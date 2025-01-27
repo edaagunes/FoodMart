@@ -26,7 +26,7 @@
                     <div class="swiper-wrapper">
                         @foreach (var item in Model)
                         {
-                            <a href="index.html" class="nav-link category-item swiper-slide">
+                            <a href="/Category/Index/@item.CategoryId" class="nav-link category-item swiper-slide">
                                 <img src="@item.Icon" alt="Category Thumbnail">
                                 <h3 class="category-title">@item.CategoryName</h3>
                             </a>

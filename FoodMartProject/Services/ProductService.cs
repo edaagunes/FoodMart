@@ -60,5 +60,27 @@ namespace FoodMartProject.Services
 
 			return result;
 		}
+
+		public async Task<List<ResultProductDto>> GetProductsByCategoryIdAsync(string categoryId)
+		{
+			// İlk olarak ürünleri kategori id'sine göre al
+			var products = await _collection.AsQueryable()
+											.Where(product => product.CategoryId == categoryId)
+											.ToListAsync();
+
+			// Ürünlerin kategori adlarını ekleyebilmek için kategori verisini al
+			var category = await _categoryCollection.AsQueryable()
+													 .FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+
+			var result = products.Select(product => new ResultProductDto
+			{
+				ProductId = product.ProductId,
+				ProductName = product.ProductName,
+				ProductPrice = product.ProductPrice,
+				ProductImage = product.ProductImage,
+				CategoryName = category != null ? category.CategoryName : "Kategori Yok"
+			}).ToList();
+			return result;
+		}
 	}
 }
