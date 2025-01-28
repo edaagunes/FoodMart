@@ -65,6 +65,7 @@ Admin paneli üzerinden site üzerindeki tüm alanlar dinamik olarak güncellene
   </tr>
   <tr>
     <td>📜 View Components ve Areas kullanıldı.</td>
+     <td>🌠JavaScript ve Ajax ile veri işleme ve sayfa yenilenmeden güncelleme işlemleri yapıldı.</td>
   </tr> 
 </table>
 
